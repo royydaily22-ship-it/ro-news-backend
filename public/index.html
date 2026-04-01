@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RO NEWS — Berita Aktual & Terpercaya</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#f5f4f1;--ink:#0e0d0b;--mid:#5a5955;--light:#b8b6b0;
+      --rule:#d8d6d0;--card:#rgba(255,255,255,.72);--shadow:0 2px 24px rgba(14,13,11,.08);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(14,13,11,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(14,13,11,.04) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+    .deco{position:fixed;pointer-events:none;z-index:0}
+    .deco.d1{width:6px;height:6px;background:var(--light);top:18%;left:5%;border-radius:50%;opacity:.6}
+    .deco.d2{width:3px;height:3px;background:var(--ink);top:40%;right:7%;border-radius:50%;opacity:.25}
+    #progress{position:fixed;top:0;left:0;height:2px;background:var(--ink);z-index:999;width:0%;transition:width .1s}
+    .wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 24px}
+
+    /* HEADER */
+    header{padding:44px 0 32px;text-align:center;position:relative;z-index:1}
+    .eyebrow{font-size:10px;font-weight:500;letter-spacing:.22em;text-transform:uppercase;color:var(--mid);margin-bottom:10px}
+    .site-title{font-family:'DM Serif Display',serif;font-size:clamp(50px,10vw,82px);letter-spacing:-.02em;line-height:1;color:var(--ink);display:inline-block;position:relative}
+    .site-title::before,.site-title::after{content:'◼';font-size:8px;position:absolute;top:10px;color:var(--light)}
+    .site-title::before{left:-20px}.site-title::after{right:-20px}
+    .site-sub{margin-top:8px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--mid);font-weight:300}
+    .header-rule{display:flex;align-items:center;gap:12px;margin-top:24px}
+    .header-rule span{flex:1;height:1px;background:var(--rule)}
+    .header-rule em{font-style:normal;font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--light);white-space:nowrap}
+
+    /* NAV */
+    nav{display:flex;justify-content:center;gap:24px;padding:13px 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);margin-bottom:40px;position:relative;z-index:1;flex-wrap:wrap}
+    nav button{background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--mid);transition:color .2s;padding:2px 0}
+    nav button.active{color:var(--ink);border-bottom:1.5px solid var(--ink);padding-bottom:1px}
+    nav button:hover{color:var(--ink)}
+
+    /* HERO CARD */
+    .hero{margin-bottom:52px}
+    .hero-card{background:rgba(255,255,255,.78);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border:1px solid rgba(255,255,255,.9);border-radius:20px;overflow:hidden;box-shadow:var(--shadow);display:flex;flex-direction:row;align-items:stretch;cursor:pointer;transition:transform .25s,box-shadow .25s}
+    .hero-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(14,13,11,.12)}
+    @media(max-width:700px){.hero-card{flex-direction:column}}
+    .hero-img-wrap{width:48%;min-width:48%;position:relative;overflow:hidden;background:linear-gradient(135deg,#e8e5e0,#d0cdc8);display:flex;align-items:center;justify-content:center;font-size:48px}
+    @media(max-width:700px){.hero-img-wrap{width:100%;min-width:unset;aspect-ratio:16/9}}
+    .hero-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.25,.46,.45,.94)}
+    .hero-card:hover .hero-img-wrap img{transform:scale(1.04)}
+    .hero-img-title{position:absolute;bottom:0;left:0;right:0;padding:20px;background:linear-gradient(to top,rgba(0,0,0,.65) 0%,transparent 100%)}
+    .hero-img-title h2{font-family:'DM Serif Display',serif;font-size:clamp(18px,2.5vw,26px);line-height:1.2;color:#fff;font-weight:700}
+    .hero-content{flex:1;padding:28px 32px;display:flex;flex-direction:column;justify-content:center;gap:14px}
+    .hero-tags{display:flex;gap:8px;flex-wrap:wrap}
+    .hero-tag{font-size:12px;font-weight:500;padding:4px 14px;border-radius:99px}
+    .hero-title{font-family:'DM Serif Display',serif;font-size:clamp(20px,2.8vw,28px);line-height:1.25;color:var(--ink);font-weight:700}
+    .hero-excerpt{font-size:14px;line-height:1.7;color:var(--mid);font-weight:300;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+    .hero-read-more{font-size:13px;font-weight:500;color:var(--mid);display:flex;align-items:center;gap:4px}
+    .hero-read-more::after{content:'›';font-size:16px}
+    .hero-meta{font-size:12px;color:var(--mid);display:flex;align-items:center;gap:8px;margin-top:4px}
+    .article-meta{display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-wrap:wrap}
+    .tag{display:inline-block;font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;background:var(--ink);color:#fff;padding:4px 10px;border-radius:3px}
+    .article-meta time{font-size:11px;color:var(--mid);font-weight:300}
+    .dot-sep{color:var(--light);font-size:10px}
+    .article-title{font-family:'DM Serif Display',serif;font-size:clamp(26px,4.5vw,40px);line-height:1.18;letter-spacing:-.01em;color:var(--ink);margin-bottom:10px;max-width:640px}
+
+    /* ARTICLE LIST (grid berita) */
+    .section-header{display:flex;align-items:center;gap:12px;margin:48px 0 24px}
+    .section-header span{flex:1;height:1px;background:var(--rule)}
+    .section-header strong{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--mid)}
+    .news-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;margin-bottom:48px}
+    .news-card{background:rgba(255,255,255,.65);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.75);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .25s,box-shadow .25s;box-shadow:0 1px 12px rgba(14,13,11,.06)}
+    .news-card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(14,13,11,.1)}
+    .news-card-img{width:100%;aspect-ratio:16/9;overflow:hidden;background:linear-gradient(135deg,#e8e5e0,#d0cdc8);display:flex;align-items:center;justify-content:center;font-size:28px}
+    .news-card-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+    .news-card:hover .news-card-img img{transform:scale(1.05)}
+    .news-card-body{padding:16px}
+    .news-card-tag{font-size:9px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;background:var(--ink);color:#fff;padding:3px 8px;border-radius:3px;display:inline-block;margin-bottom:8px}
+    .news-card-title{font-family:'DM Serif Display',serif;font-size:16px;line-height:1.3;color:var(--ink);margin-bottom:6px}
+    .news-card-meta{font-size:10px;color:var(--mid);font-weight:300}
+
+    /* TAGS */
+    .tags-row{display:flex;flex-wrap:wrap;gap:8px;margin:24px 0}
+    .pill{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);border-radius:99px;padding:5px 14px;color:var(--mid);cursor:default;transition:all .2s}
+    .pill:hover{border-color:var(--ink);color:var(--ink)}
+
+    /* LOADING */
+    .loading{text-align:center;padding:60px 0;color:var(--mid);font-size:13px;letter-spacing:.1em}
+    .loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--rule);border-top-color:var(--ink);border-radius:50%;margin:12px auto 0;animation:spin .6s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .empty{text-align:center;padding:60px 0;color:var(--mid);font-size:14px}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(14,13,11,.55);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--bg);border-radius:20px;max-width:760px;width:100%;box-shadow:0 24px 80px rgba(14,13,11,.2);animation:modalIn .3s ease;margin:auto}
+    @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:20px;right:20px;background:rgba(14,13,11,.08);border:none;cursor:pointer;width:36px;height:36px;border-radius:50%;font-size:16px;display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .modal-close:hover{background:rgba(14,13,11,.15)}
+    .modal-inner{position:relative;padding:36px}
+    .modal-img{width:100%;aspect-ratio:16/9;border-radius:12px;overflow:hidden;margin-bottom:24px;background:linear-gradient(135deg,#e8e5e0,#d0cdc8);display:flex;align-items:center;justify-content:center;font-size:48px}
+    .modal-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .modal-body p{font-size:15px;line-height:1.8;color:var(--ink);font-weight:300;margin-bottom:16px}
+    .modal-body p:first-child::first-letter{font-family:'DM Serif Display',serif;font-size:3em;float:left;line-height:.78;margin-right:8px;margin-top:6px;color:var(--ink)}
+    .modal-body blockquote{border-left:3px solid var(--ink);padding:12px 20px;margin:20px 0;background:rgba(14,13,11,.03);border-radius:0 10px 10px 0}
+    .modal-body blockquote p{font-family:'DM Serif Display',serif;font-size:17px;line-height:1.5;font-style:italic;margin:0}
+    .modal-body blockquote p::first-letter{font-size:1em;float:none;margin:0}
+
+    /* FOOTER */
+    footer{position:relative;z-index:1;border-top:1px solid var(--rule);margin-top:40px;padding:28px 0 36px}
+    .footer-inner{max-width:960px;margin:0 auto;padding:0 24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px}
+    .footer-brand{font-family:'DM Serif Display',serif;font-size:20px;color:var(--ink)}
+    .footer-info{text-align:right}
+    .footer-info p{font-size:11px;color:var(--mid);font-weight:300;line-height:1.7}
+    .footer-info strong{color:var(--ink);font-weight:500}
+    .footer-admin{font-size:10px;color:var(--light);text-decoration:none;letter-spacing:.1em;transition:color .2s}
+    .footer-admin:hover{color:var(--ink)}
+
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .news-card{animation:fadeUp .4s ease both}
+
+    /* AUTHOR AVATAR */
+    .author-chip{display:flex;align-items:center;gap:7px}
+    .author-avatar{width:24px;height:24px;border-radius:50%;background:var(--rule);border:1.5px solid var(--rule);overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--mid)}
+    .author-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .author-avatar-lg{width:38px;height:38px;border-radius:50%;background:var(--rule);border:2px solid var(--rule);overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:16px;color:var(--mid)}
+    .author-avatar-lg img{width:100%;height:100%;object-fit:cover;display:block}
+    .author-info-lg{display:flex;flex-direction:column;gap:1px}
+    .author-info-lg strong{font-size:13px;font-weight:500;color:var(--ink)}
+    .author-info-lg span{font-size:11px;color:var(--mid);font-weight:300}
+  </style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="deco d1"></div>
+<div class="deco d2"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="wrap">
+    <p class="eyebrow">Portal Berita &nbsp;·&nbsp; Edisi Digital &nbsp;·&nbsp; 2025</p>
+    <h1 class="site-title">RO NEWS</h1>
+    <p class="site-sub">Berita Aktual &amp; Terpercaya</p>
+    <div class="header-rule"><span></span><em>Membaca Dunia Lebih Dekat</em><span></span></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<div class="wrap">
+  <nav id="catNav">
+    <button class="active" data-cat="">Semua</button>
+  </nav>
+</div>
+
+<!-- MAIN -->
+<main class="wrap">
+  <div id="heroSection"></div>
+
+  <div class="section-header">
+    <strong id="listLabel">Berita Terbaru</strong>
+    <span></span>
+  </div>
+  <div id="newsList" class="news-grid">
+    <div class="loading"></div>
+  </div>
+</main>
+
+<!-- MODAL DETAIL -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal">
+    <div class="modal-inner" id="modalInner">
+      <button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">RO NEWS</div>
+    <div class="footer-info">
+      <p>© 2025 <strong>RO NEWS</strong> — Berita Aktual & Terpercaya</p>
+      <p><a href="admin.html" class="footer-admin">[ Admin Panel ]</a></p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  let allArticles = [];
+  let currentCat = '';
+
+  // reading progress
+  window.addEventListener('scroll', () => {
+    const pct = (document.documentElement.scrollTop / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
+    document.getElementById('progress').style.width = pct + '%';
+  });
+
+  // format tanggal
+  function formatDate(d) {
+    return new Date(d).toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  }
+
+  // load categories
+  async function loadCategories() {
+    try {
+      const res = await fetch('/api/categories');
+      const cats = await res.json();
+      const nav = document.getElementById('catNav');
+      cats.forEach(cat => {
+        const btn = document.createElement('button');
+        btn.textContent = cat;
+        btn.dataset.cat = cat;
+        btn.onclick = () => filterCat(cat, btn);
+        nav.appendChild(btn);
+      });
+    } catch(e) {}
+  }
+
+  function filterCat(cat, btn) {
+    currentCat = cat;
+    document.querySelectorAll('#catNav button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('listLabel').textContent = cat ? `Kategori: ${cat}` : 'Berita Terbaru';
+    const filtered = cat ? allArticles.filter(a => a.category === cat) : allArticles;
+    renderHero(filtered);
+    renderList(filtered.slice(1));
+  }
+
+  // load articles
+  async function loadArticles() {
+    try {
+      const res = await fetch('/api/articles');
+      allArticles = await res.json();
+      renderHero(allArticles);
+      renderList(allArticles.slice(1));
+    } catch(e) {
+      document.getElementById('newsList').innerHTML = '<p class="empty">Gagal memuat berita. Pastikan server berjalan.</p>';
+    }
+  }
+
+  const catColorMap = {};
+  let catColorIndex = 0;
+  function getCatColor(cat) {
+    if (catColorMap[cat] === undefined) { catColorMap[cat] = catColorIndex++ % 6; }
+    return catColorMap[cat];
+  }
+
+  function renderHero(articles) {
+    const hero = document.getElementById('heroSection');
+    if (!articles.length) { hero.innerHTML = ''; return; }
+    const a = articles[0];
+    const excerpt = (a.content || '').split('\n\n')[0].slice(0, 180) + '...';
+    const colorIdx = getCatColor(a.category);
+    hero.innerHTML = `
+      <div class="hero">
+        <div class="hero-card" onclick="openArticle(${a.id})">
+          <div class="hero-img-wrap">
+            ${a.image_url
+              ? `<img src="${a.image_url}" alt="${a.title}" loading="lazy"/>`
+              : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--light)"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>`}
+            <div class="hero-img-title"><h2>${a.title}</h2></div>
+          </div>
+          <div class="hero-content">
+            <div class="hero-tags">
+              <span class="hero-tag tag-color-${colorIdx}">${a.category}</span>
+            </div>
+            <div class="hero-title">${a.title}</div>
+            <div class="hero-excerpt">${excerpt}</div>
+            <div class="hero-read-more">Continue Reading </div>
+            <div class="hero-meta">
+              <div class="author-chip">
+                <div class="author-avatar">
+                  ${a.author_avatar ? `<img src="${a.author_avatar}" alt="${a.author_display || a.author}"/>` : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
+                </div>
+                <span>${a.author_display || a.author}</span>
+              </div>
+              &nbsp;·&nbsp; <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${formatDate(a.created_at)}
+            </div>
+          </div>
+        </div>
+      </div>`;
+  }
+
+  function renderList(articles) {
+    const list = document.getElementById('newsList');
+    if (!articles.length) { list.innerHTML = '<p class="empty">Belum ada berita lain.</p>'; return; }
+    list.innerHTML = articles.map((a, i) => `
+      <div class="news-card" style="animation-delay:${i * 0.05}s" onclick="openArticle(${a.id})">
+        <div class="news-card-img">
+          ${a.image_url ? `<img src="${a.image_url}" alt="${a.title}" loading="lazy"/>` : `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--light)"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>`}
+        </div>
+        <div class="news-card-body">
+          <span class="news-card-tag">${a.category}</span>
+          <div class="news-card-title">${a.title}</div>
+          <div class="news-card-meta">
+            <div class="author-chip">
+              <div class="author-avatar">
+                ${a.author_avatar ? `<img src="${a.author_avatar}" alt="${a.author_display || a.author}"/>` : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
+              </div>
+              <span>${a.author_display || a.author} · ${formatDate(a.created_at)}</span>
+            </div>
+          </div>
+        </div>
+      </div>`).join('');
+  }
+
+  async function openArticle(id) {
+    const overlay = document.getElementById('modalOverlay');
+    const inner = document.getElementById('modalInner');
+    overlay.classList.add('open');
+    inner.innerHTML = `<button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="loading"></div>`;
+    try {
+      const res = await fetch(`/api/articles/${id}`);
+      const a = await res.json();
+      const paragraphs = (a.content || '').split('\n\n').filter(Boolean);
+      inner.innerHTML = `
+        <button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        ${a.image_url ? `<div class="modal-img"><img src="${a.image_url}" alt="${a.title}"/></div>` : ''}
+        <div class="article-meta" style="margin-bottom:12px">
+          <span class="tag">${a.category}</span>
+          <span class="dot-sep">◼</span>
+          <time>${formatDate(a.created_at)}</time>
+        </div>
+        <h2 class="article-title" style="font-size:clamp(22px,3.5vw,32px);margin-bottom:8px">${a.title}</h2>
+        ${a.price_info ? `<div class="article-price" style="margin-bottom:16px"><span>${a.price_info}</span></div>` : ''}
+        <div class="modal-body">
+          ${paragraphs.map(p => `<p>${p}</p>`).join('')}
+          ${a.quote ? `<blockquote><p>"${a.quote}"</p></blockquote>` : ''}
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--rule)">
+          <div class="author-avatar-lg">
+            ${a.author_avatar ? `<img src="${a.author_avatar}" alt="${a.author_display || a.author}"/>` : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
+          </div>
+          <div class="author-info-lg">
+            <strong>${a.author_display || a.author}</strong>
+            <span>Ditulis pada ${formatDate(a.created_at)}</span>
+          </div>
+        </div>
+        <div class="tags-row"><span class="pill">${a.category}</span></div>`;
+    } catch(e) {
+      inner.innerHTML = `<button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><p class="empty">Gagal memuat artikel.</p>`;
+    }
+  }
+
+  function closeModal() { document.getElementById('modalOverlay').classList.remove('open'); }
+  function handleOverlayClick(e) { if (e.target === document.getElementById('modalOverlay')) closeModal(); }
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  loadCategories();
+  loadArticles();
+</script>
+</body>
+</html>

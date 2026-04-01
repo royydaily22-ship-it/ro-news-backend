@@ -1,0 +1,44 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password": "$2a$10$QsnATXLL23iiggdvnKuE2.GMhwK.K2Gvca4xJ9RLUOIToUGqm8cbG",
+      "role": "admin",
+      "avatar_url": "/uploads/1775046126578-465064.png",
+      "full_name": "royy",
+      "bio": ""
+    }
+  ],
+  "articles": [
+    {
+      "id": 2,
+      "title": "Ribuan Warga Hadiri Peringatan Isra Miraj di Masjid Agung Kota",
+      "subtitle": "",
+      "category": "Nasional",
+      "content": "Ribuan warga memadati Masjid Agung kota pada peringatan Isra Miraj Nabi Muhammad SAW, Kamis malam. Acara yang digelar rutin setiap tahun ini menghadirkan suasana khidmat dengan lantunan selawat yang menggema hingga ke luar masjid.\r\n\r\nKetua panitia pelaksana, Ustaz Mahmud Rahman, menyampaikan bahwa tahun ini peserta yang hadir meningkat dibanding tahun sebelumnya. Pihak panitia menyiapkan tempat duduk untuk lebih dari dua ribu jamaah, namun animo masyarakat jauh melebihi perkiraan.\r\n\r\nPeringatan Isra Miraj menjadi momentum bagi umat Islam untuk merefleksikan makna perjalanan spiritual Nabi Muhammad SAW dari Masjidil Haram ke Masjidil Aqsa, hingga ke Sidratul Muntaha. Dari peristiwa agung itulah perintah salat lima waktu diturunkan.\r\n\r\nAcara berlangsung hingga larut malam dengan tausiyah dari ulama setempat. Warga tampak antusias mengikuti setiap rangkaian kegiatan meski harus duduk lesehan di halaman masjid karena keterbatasan tempat.",
+      "quote": "",
+      "image_url": "/uploads/1775030295661-426195.png",
+      "author": "Reporter RO NEWS",
+      "price_info": "",
+      "published": 1,
+      "created_at": "2026-04-01 14:58:15",
+      "updated_at": "2026-04-01 14:58:15"
+    },
+    {
+      "id": 3,
+      "title": "Pengacara Soroti Dugaan Kejanggalan Penggeledahan Rumah Ono Surono",
+      "subtitle": "",
+      "category": "Nasional",
+      "content": "Jakarta, RO NEWS – Proses penggeledahan yang dilakukan oleh penyidik Komisi Pemberantasan Korupsi (KPK) di rumah Ketua DPD PDIP Jawa Barat, Ono Surono, menuai sorotan dari pihak kuasa hukum.\r\n\r\nPengacara Ono, Sahali, menyampaikan adanya dugaan kejanggalan selama proses berlangsung. Ia mempertanyakan prosedur yang dilakukan penyidik, terutama terkait dasar hukum yang digunakan dalam tindakan tersebut.\r\n\r\nMenurut Sahali, salah satu hal yang dinilai tidak lazim adalah permintaan penyidik untuk mematikan kamera pengawas (CCTV) di lokasi penggeledahan.\r\n\r\n“Dalam proses ini kami melihat adanya kejanggalan, karena penyidik meminta agar CCTV dimatikan. Hal ini menimbulkan pertanyaan besar bagi kami, apa alasan dan dasar hukumnya?” ujar Sahali dalam keterangan tertulis, Rabu (1/4).\r\n\r\nIa menambahkan bahwa pihaknya akan menelusuri lebih lanjut langkah hukum yang dapat diambil, termasuk meminta penjelasan resmi dari KPK terkait prosedur tersebut.\r\n\r\nSampai saat ini, belum ada keterangan resmi dari pihak KPK mengenai alasan permintaan penghentian rekaman CCTV saat penggeledahan dilakukan.\r\n\r\nKasus ini pun menjadi perhatian, terutama dalam hal transparansi dan akuntabilitas dalam penegakan hukum di Indonesia.",
+      "quote": "",
+      "image_url": "/uploads/1775047257987-835739.png",
+      "author": "royy",
+      "author_id": 1,
+      "price_info": "",
+      "published": 1,
+      "created_at": "2026-04-01 19:40:58",
+      "updated_at": "2026-04-01 19:40:58"
+    }
+  ]
+}

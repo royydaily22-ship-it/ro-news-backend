@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>RO NEWS — Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --bg:#111110;--surface:#1a1918;--surface2:#222120;--border:#2e2c2a;
+      --ink:#f0ede8;--mid:#8a8780;--light:#5a5755;--accent:#f0ede8;
+      --green:#4ade80;--red:#f87171;--yellow:#fbbf24;--shadow:0 2px 20px rgba(0,0,0,.4);
+    }
+    html{scroll-behavior:smooth}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--ink);min-height:100vh;overflow-x:hidden}
+    body::before{content:'';position:fixed;inset:0;background-image:linear-gradient(rgba(240,237,232,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,232,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;z-index:0}
+
+    /* LOGIN */
+    .login-wrap{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:200;background:var(--bg)}
+    .login-box{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:40px;width:100%;max-width:360px;box-shadow:var(--shadow)}
+    .login-box h1{font-family:'DM Serif Display',serif;font-size:28px;color:var(--ink);margin-bottom:4px}
+    .login-box p{font-size:12px;color:var(--mid);margin-bottom:28px;letter-spacing:.05em}
+    .field{margin-bottom:16px}
+    .field label{display:block;font-size:10px;font-weight:600;letter-spacing:.15em;text-transform:uppercase;color:var(--mid);margin-bottom:6px}
+    .field input,.field select,.field textarea{width:100%;background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s}
+    .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--light)}
+    .field textarea{resize:vertical;min-height:120px;line-height:1.6}
+    .btn{display:inline-flex;align-items:center;gap:6px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;padding:10px 20px;border-radius:10px;border:none;cursor:pointer;transition:all .2s}
+    .btn-primary{background:var(--ink);color:var(--bg);width:100%;justify-content:center}
+    .btn-primary:hover{opacity:.85}
+    .btn-sm{padding:6px 14px;font-size:10px;border-radius:7px}
+    .btn-ghost{background:transparent;border:1px solid var(--border);color:var(--mid)}
+    .btn-ghost:hover{border-color:var(--ink);color:var(--ink)}
+    .btn-danger{background:rgba(248,113,113,.12);border:1px solid rgba(248,113,113,.25);color:var(--red)}
+    .btn-danger:hover{background:rgba(248,113,113,.2)}
+    .btn-success{background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.25);color:var(--green)}
+    .btn-success:hover{background:rgba(74,222,128,.2)}
+    .err{color:var(--red);font-size:12px;margin-top:10px;text-align:center}
+
+    /* LAYOUT */
+    .app{display:none;min-height:100vh}
+    .app.show{display:flex}
+    .sidebar-nav{width:220px;background:var(--surface);border-right:1px solid var(--border);padding:24px 16px;display:flex;flex-direction:column;gap:4px;position:fixed;top:0;left:0;bottom:0;z-index:10}
+    .sidebar-brand{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);padding:0 8px 20px;border-bottom:1px solid var(--border);margin-bottom:12px;display:flex;flex-direction:column;gap:2px}
+    .sidebar-brand span{font-family:'DM Sans',sans-serif;font-size:9px;letter-spacing:.15em;text-transform:uppercase;color:var(--mid)}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:10px;cursor:pointer;font-size:13px;color:var(--mid);transition:all .2s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif}
+    .nav-item:hover{background:var(--surface2);color:var(--ink)}
+    .nav-item.active{background:var(--surface2);color:var(--ink);font-weight:500}
+    .nav-item .icon{width:20px;text-align:center}
+    .nav-bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:12px}
+    .nav-user{font-size:11px;color:var(--mid);padding:6px 12px;margin-bottom:8px}
+    .nav-user strong{color:var(--ink);display:block;font-size:12px}
+    .main-content{margin-left:220px;flex:1;padding:32px;position:relative;z-index:1}
+
+    /* HEADER */
+    .page-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:12px}
+    .page-header h2{font-family:'DM Serif Display',serif;font-size:26px;color:var(--ink)}
+    .page-header p{font-size:12px;color:var(--mid);margin-top:2px}
+
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px}
+    .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px;transition:border-color .2s}
+    .stat-card:hover{border-color:var(--light)}
+    .stat-card .s-label{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);margin-bottom:8px}
+    .stat-card .s-val{font-family:'DM Serif Display',serif;font-size:28px;color:var(--ink)}
+
+    /* TABLE */
+    .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+    .table-toolbar{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .search-box{flex:1;min-width:180px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none}
+    .search-box:focus{border-color:var(--light)}
+    table{width:100%;border-collapse:collapse}
+    th{font-size:9px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--mid);padding:12px 16px;text-align:left;border-bottom:1px solid var(--border);background:var(--surface)}
+    td{padding:12px 16px;border-bottom:1px solid var(--border);font-size:13px;vertical-align:middle}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:rgba(240,237,232,.02)}
+    .td-img{width:48px;height:36px;border-radius:7px;overflow:hidden;background:var(--surface2);flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:18px}
+    .td-img img{width:100%;height:100%;object-fit:cover}
+    .td-title{font-weight:500;color:var(--ink);max-width:260px}
+    .td-title small{display:block;font-size:11px;color:var(--mid);font-weight:300;margin-top:2px}
+    .badge{display:inline-block;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:3px 9px;border-radius:99px}
+    .badge-pub{background:rgba(74,222,128,.12);color:var(--green);border:1px solid rgba(74,222,128,.2)}
+    .badge-draft{background:rgba(251,191,36,.1);color:var(--yellow);border:1px solid rgba(251,191,36,.2)}
+    .actions{display:flex;gap:6px}
+
+    /* PROFIL */
+    .profile-wrap{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    @media(max-width:700px){.profile-wrap{grid-template-columns:1fr}}
+    .profile-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px}
+    .profile-card h3{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink);margin-bottom:20px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+    .avatar-wrap{display:flex;align-items:center;gap:16px;margin-bottom:20px}
+    .avatar-circle{width:72px;height:72px;border-radius:50%;background:var(--surface2);border:2px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0}
+    .avatar-circle img{width:100%;height:100%;object-fit:cover}
+    .avatar-info strong{display:block;font-size:14px;color:var(--ink);margin-bottom:4px}
+    .avatar-info span{font-size:11px;color:var(--mid)}
+
+    /* USER TABLE */
+    .user-avatar{width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);overflow:hidden;display:inline-flex;align-items:center;justify-content:center;font-size:14px}
+    .user-avatar img{width:100%;height:100%;object-fit:cover}
+
+    /* MODAL FORM */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);z-index:100;display:none;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto}
+    .modal-overlay.open{display:flex}
+    .modal{background:var(--surface);border:1px solid var(--border);border-radius:20px;max-width:640px;width:100%;box-shadow:0 24px 80px rgba(0,0,0,.5);animation:modalIn .3s ease;margin:auto}
+    @keyframes modalIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-header{padding:24px 28px 0;display:flex;justify-content:space-between;align-items:center}
+    .modal-header h3{font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink)}
+    .modal-close-btn{background:var(--surface2);border:none;cursor:pointer;width:32px;height:32px;border-radius:50%;color:var(--mid);font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .modal-close-btn:hover{background:var(--border);color:var(--ink)}
+    .modal-body-form{padding:24px 28px 28px;display:flex;flex-direction:column;gap:14px}
+    .row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    .img-preview{width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:32px;margin-bottom:4px}
+    .img-preview img{width:100%;height:100%;object-fit:cover}
+    .modal-footer{padding:0 28px 24px;display:flex;justify-content:flex-end;gap:10px}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 20px;font-size:13px;color:var(--ink);box-shadow:var(--shadow);z-index:300;transform:translateY(80px);opacity:0;transition:all .3s}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.success{border-color:rgba(74,222,128,.3);color:var(--green)}
+    .toast.error{border-color:rgba(248,113,113,.3);color:var(--red)}
+    .loading-row td{text-align:center;padding:40px;color:var(--mid);font-size:13px}
+
+    @media(max-width:768px){.sidebar-nav{display:none}.main-content{margin-left:0;padding:20px}}
+  </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <h1>RO NEWS</h1>
+    <p>Admin Panel — Masuk untuk melanjutkan</p>
+    <div class="field"><label>Username</label><input type="text" id="loginUser" placeholder="admin" autocomplete="username"/></div>
+    <div class="field"><label>Password</label><input type="password" id="loginPass" placeholder="••••••••" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <button class="btn btn-primary" onclick="doLogin()">Masuk</button>
+    <p class="err" id="loginErr"></p>
+  </div>
+</div>
+
+<!-- APP -->
+<div class="app" id="app">
+  <nav class="sidebar-nav">
+    <div class="sidebar-brand">RO NEWS <span>Admin Panel</span></div>
+    <button class="nav-item active" id="navDashboard" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</button>
+    <button class="nav-item" id="navArticles" onclick="showPage('articles')"><span class="icon">📰</span> Artikel</button>
+    <button class="nav-item" id="navNew" onclick="openForm()"><span class="icon">✏️</span> Tulis Berita</button>
+    <button class="nav-item" id="navUsers" onclick="showPage('users')"><span class="icon">👥</span> Akun</button>
+    <button class="nav-item" id="navProfile" onclick="showPage('profile')"><span class="icon">🙍</span> Profil Saya</button>
+    <div class="nav-bottom">
+      <div class="nav-user"><strong id="navUsername">Admin</strong>Administrator</div>
+      <button class="nav-item" onclick="window.open('/index.html','_blank')"><span class="icon">🌐</span> Lihat Website</button>
+      <button class="nav-item" onclick="doLogout()"><span class="icon">🚪</span> Keluar</button>
+    </div>
+  </nav>
+
+  <div class="main-content">
+
+    <!-- DASHBOARD -->
+    <div id="pageDashboard">
+      <div class="page-header">
+        <div><h2>Dashboard</h2><p>Selamat datang di panel admin RO NEWS</p></div>
+        <button class="btn btn-primary btn-sm" onclick="openForm()">✏️ &nbsp;Tulis Berita</button>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-card"><div class="s-label">Total Artikel</div><div class="s-val" id="statTotal">—</div></div>
+        <div class="stat-card"><div class="s-label">Dipublikasikan</div><div class="s-val" id="statPub">—</div></div>
+        <div class="stat-card"><div class="s-label">Draft</div><div class="s-val" id="statDraft">—</div></div>
+        <div class="stat-card"><div class="s-label">Kategori</div><div class="s-val" id="statCat">—</div></div>
+      </div>
+      <div class="page-header" style="margin-top:8px"><div><h2 style="font-size:18px">Artikel Terbaru</h2></div></div>
+      <div class="table-wrap">
+        <table><thead><tr><th>Judul</th><th>Kategori</th><th>Status</th><th>Tanggal</th></tr></thead>
+        <tbody id="recentTable"><tr class="loading-row"><td colspan="4">Memuat...</td></tr></tbody></table>
+      </div>
+    </div>
+
+    <!-- ARTICLES -->
+    <div id="pageArticles" style="display:none">
+      <div class="page-header">
+        <div><h2>Kelola Artikel</h2><p>Tambah, edit, dan hapus berita</p></div>
+        <button class="btn btn-primary btn-sm" onclick="openForm()">✏️ &nbsp;Tulis Berita</button>
+      </div>
+      <div class="table-wrap">
+        <div class="table-toolbar">
+          <input class="search-box" type="text" placeholder="Cari judul berita..." oninput="filterTable(this.value)"/>
+        </div>
+        <table>
+          <thead><tr><th>Gambar</th><th>Judul</th><th>Kategori</th><th>Status</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+          <tbody id="articlesTable"><tr class="loading-row"><td colspan="6">Memuat...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- USERS -->
+    <div id="pageUsers" style="display:none">
+      <div class="page-header">
+        <div><h2>Kelola Akun</h2><p>Tambah dan hapus akun reporter</p></div>
+        <button class="btn btn-primary btn-sm" onclick="openUserForm()">+ &nbsp;Tambah Akun</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Avatar</th><th>Username</th><th>Nama</th><th>Role</th><th>Aksi</th></tr></thead>
+          <tbody id="usersTable"><tr class="loading-row"><td colspan="5">Memuat...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- PROFILE -->
+    <div id="pageProfile" style="display:none">
+      <div class="page-header"><div><h2>Profil Saya</h2><p>Edit informasi dan foto profil</p></div></div>
+      <div class="profile-wrap">
+        <!-- Edit Profil -->
+        <div class="profile-card">
+          <h3>Informasi Profil</h3>
+          <div class="avatar-wrap">
+            <div class="avatar-circle" id="profileAvatarPreview">👤</div>
+            <div class="avatar-info">
+              <strong id="profileDisplayName">—</strong>
+              <span id="profileUsername">—</span>
+            </div>
+          </div>
+          <div class="field"><label>Nama Lengkap</label><input type="text" id="pFullName" placeholder="Nama tampilan kamu..."/></div>
+          <div class="field"><label>Bio</label><textarea id="pBio" placeholder="Ceritakan sedikit tentang dirimu..." style="min-height:80px"></textarea></div>
+          <div class="field">
+            <label>Foto Profil</label>
+            <input type="file" id="pAvatar" accept="image/*" onchange="previewAvatar(this)"/>
+            <small style="font-size:10px;color:var(--mid);margin-top:4px;display:block">Maks. 5MB · JPG, PNG, WEBP</small>
+          </div>
+          <button class="btn btn-primary" style="margin-top:8px" onclick="saveProfile()">Simpan Profil</button>
+        </div>
+
+        <!-- Ganti Password -->
+        <div class="profile-card">
+          <h3>Ganti Password</h3>
+          <div class="field"><label>Password Lama</label><input type="password" id="pOldPass" placeholder="••••••••"/></div>
+          <div class="field"><label>Password Baru</label><input type="password" id="pNewPass" placeholder="••••••••"/></div>
+          <div class="field"><label>Konfirmasi Password Baru</label><input type="password" id="pConfPass" placeholder="••••••••"/></div>
+          <button class="btn btn-primary" style="margin-top:8px" onclick="changePassword()">Ganti Password</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FORM ARTIKEL -->
+<div class="modal-overlay" id="formModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 id="formTitle">Tulis Berita Baru</h3>
+      <button class="modal-close-btn" onclick="closeForm()">✕</button>
+    </div>
+    <div class="modal-body-form">
+      <input type="hidden" id="editId"/>
+      <div class="field"><label>Judul Berita *</label><input type="text" id="fTitle" placeholder="Masukkan judul berita..."/></div>
+      <div class="row-2">
+        <div class="field"><label>Kategori *</label>
+          <select id="fCategory">
+            <option>Umum</option><option>Nasional</option><option>Daerah</option>
+            <option>Kuliner</option><option>Ekonomi</option><option>Olahraga</option>
+            <option>Teknologi</option><option>Budaya</option><option>Pendidikan</option>
+          </select>
+        </div>
+        <div class="field"><label>Status</label>
+          <select id="fPublished"><option value="1">Publikasikan</option><option value="0">Simpan sebagai Draft</option></select>
+        </div>
+      </div>
+      <div class="field"><label>Isi Berita *</label><textarea id="fContent" placeholder="Tulis isi berita... (pisahkan paragraf dengan baris kosong)"></textarea></div>
+      <div class="field"><label>Penulis</label><input type="text" id="fAuthor" placeholder="Nama reporter..."/></div>
+      <div class="field">
+        <label>Gambar</label>
+        <div class="img-preview" id="imgPreview">📷</div>
+        <input type="file" id="fImage" accept="image/*" onchange="previewImg(this)"/>
+        <small style="font-size:10px;color:var(--mid);margin-top:4px;display:block">Maks. 5MB · JPG, PNG, WEBP</small>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeForm()">Batal</button>
+      <button class="btn btn-primary btn-sm" onclick="saveArticle()" id="saveBtn">Simpan Berita</button>
+    </div>
+  </div>
+</div>
+
+<!-- FORM TAMBAH AKUN -->
+<div class="modal-overlay" id="userModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3>Tambah Akun Baru</h3>
+      <button class="modal-close-btn" onclick="closeUserForm()">✕</button>
+    </div>
+    <div class="modal-body-form">
+      <div class="field"><label>Username *</label><input type="text" id="uUsername" placeholder="username..."/></div>
+      <div class="field"><label>Nama Lengkap</label><input type="text" id="uFullName" placeholder="Nama tampilan..."/></div>
+      <div class="field"><label>Password *</label><input type="password" id="uPassword" placeholder="••••••••"/></div>
+      <div class="field"><label>Role</label>
+        <select id="uRole"><option value="admin">Admin</option></select>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-ghost btn-sm" onclick="closeUserForm()">Batal</button>
+      <button class="btn btn-primary btn-sm" onclick="saveUser()" id="saveUserBtn">Buat Akun</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  let token = localStorage.getItem('ro_token');
+  let username = localStorage.getItem('ro_user');
+  let articlesData = [];
+  let usersData = [];
+  let myProfile = {};
+
+  if (token) showApp();
+
+  async function doLogin() {
+    const u = document.getElementById('loginUser').value.trim();
+    const p = document.getElementById('loginPass').value;
+    document.getElementById('loginErr').textContent = '';
+    try {
+      const res = await fetch('/api/login', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ username:u, password:p })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      localStorage.setItem('ro_token', data.token);
+      localStorage.setItem('ro_user', data.username);
+      token = data.token; username = data.username;
+      showApp();
+    } catch(e) {
+      document.getElementById('loginErr').textContent = e.message || 'Login gagal';
+    }
+  }
+
+  async function showApp() {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('app').classList.add('show');
+    document.getElementById('navUsername').textContent = username || 'Admin';
+    await loadProfile();
+    loadDashboard();
+  }
+
+  function doLogout() {
+    localStorage.removeItem('ro_token'); localStorage.removeItem('ro_user');
+    location.reload();
+  }
+
+  function authHeaders() {
+    return { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' };
+  }
+
+  // ── PAGES
+  function showPage(page) {
+    ['dashboard','articles','users','profile'].forEach(p => {
+      document.getElementById('page' + p.charAt(0).toUpperCase() + p.slice(1)).style.display = p === page ? '' : 'none';
+    });
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.getElementById('nav' + page.charAt(0).toUpperCase() + page.slice(1))?.classList.add('active');
+    if (page === 'articles') loadArticles();
+    if (page === 'dashboard') loadDashboard();
+    if (page === 'users') loadUsers();
+    if (page === 'profile') loadProfilePage();
+  }
+
+  // ── DASHBOARD
+  async function loadDashboard() {
+    try {
+      const res = await fetch('/api/admin/articles', { headers: authHeaders() });
+      if (res.status === 401) { doLogout(); return; }
+      const data = await res.json();
+      articlesData = data;
+      const pub = data.filter(a => a.published).length;
+      const cats = new Set(data.map(a => a.category)).size;
+      document.getElementById('statTotal').textContent = data.length;
+      document.getElementById('statPub').textContent = pub;
+      document.getElementById('statDraft').textContent = data.length - pub;
+      document.getElementById('statCat').textContent = cats;
+      document.getElementById('recentTable').innerHTML = data.slice(0,5).map(a => `
+        <tr>
+          <td><div class="td-title">${a.title}<small>${a.category}</small></div></td>
+          <td>${a.category}</td>
+          <td><span class="badge ${a.published ? 'badge-pub':'badge-draft'}">${a.published ? 'Publik':'Draft'}</span></td>
+          <td style="font-size:11px;color:var(--mid)">${new Date(a.created_at).toLocaleDateString('id-ID')}</td>
+        </tr>`).join('');
+    } catch(e) {}
+  }
+
+  // ── ARTICLES
+  async function loadArticles() {
+    document.getElementById('articlesTable').innerHTML = '<tr class="loading-row"><td colspan="6">Memuat...</td></tr>';
+    try {
+      const res = await fetch('/api/admin/articles', { headers: authHeaders() });
+      articlesData = await res.json();
+      renderTable(articlesData);
+    } catch(e) {
+      document.getElementById('articlesTable').innerHTML = '<tr class="loading-row"><td colspan="6">Gagal memuat data.</td></tr>';
+    }
+  }
+
+  function renderTable(data) {
+    if (!data.length) {
+      document.getElementById('articlesTable').innerHTML = '<tr class="loading-row"><td colspan="6">Belum ada artikel.</td></tr>';
+      return;
+    }
+    document.getElementById('articlesTable').innerHTML = data.map(a => `
+      <tr>
+        <td><div class="td-img">${a.image_url ? `<img src="${a.image_url}" alt=""/>` : '📰'}</div></td>
+        <td><div class="td-title">${a.title}<small>${a.category} · ${a.author}</small></div></td>
+        <td style="font-size:12px">${a.category}</td>
+        <td><span class="badge ${a.published ? 'badge-pub':'badge-draft'}">${a.published ? 'Publik':'Draft'}</span></td>
+        <td style="font-size:11px;color:var(--mid)">${new Date(a.created_at).toLocaleDateString('id-ID')}</td>
+        <td>
+          <div class="actions">
+            <button class="btn btn-ghost btn-sm" onclick="openEdit(${a.id})">Edit</button>
+            <button class="btn btn-sm ${a.published ? 'btn-ghost':'btn-success'}" onclick="togglePublish(${a.id})">${a.published ? 'Draft':'Publik'}</button>
+            <button class="btn btn-danger btn-sm" onclick="deleteArticle(${a.id})">Hapus</button>
+          </div>
+        </td>
+      </tr>`).join('');
+  }
+
+  function filterTable(q) {
+    const filtered = articlesData.filter(a => a.title.toLowerCase().includes(q.toLowerCase()) || a.category.toLowerCase().includes(q.toLowerCase()));
+    renderTable(filtered);
+  }
+
+  // ── USERS
+  async function loadUsers() {
+    document.getElementById('usersTable').innerHTML = '<tr class="loading-row"><td colspan="5">Memuat...</td></tr>';
+    try {
+      const res = await fetch('/api/admin/users', { headers: authHeaders() });
+      usersData = await res.json();
+      renderUsers(usersData);
+    } catch(e) {
+      document.getElementById('usersTable').innerHTML = '<tr class="loading-row"><td colspan="5">Gagal memuat.</td></tr>';
+    }
+  }
+
+  function renderUsers(data) {
+    document.getElementById('usersTable').innerHTML = data.map(u => `
+      <tr>
+        <td><div class="user-avatar">${u.avatar_url ? `<img src="${u.avatar_url}" alt=""/>` : '👤'}</div></td>
+        <td style="font-weight:500;color:var(--ink)">${u.username}</td>
+        <td style="color:var(--mid)">${u.full_name || '—'}</td>
+        <td><span class="badge badge-pub">${u.role}</span></td>
+        <td>
+          ${u.username !== username ? `<button class="btn btn-danger btn-sm" onclick="deleteUser(${u.id})">Hapus</button>` : '<span style="font-size:11px;color:var(--mid)">Akun ini</span>'}
+        </td>
+      </tr>`).join('');
+  }
+
+  function openUserForm() {
+    document.getElementById('uUsername').value = '';
+    document.getElementById('uFullName').value = '';
+    document.getElementById('uPassword').value = '';
+    document.getElementById('userModal').classList.add('open');
+  }
+
+  function closeUserForm() { document.getElementById('userModal').classList.remove('open'); }
+
+  async function saveUser() {
+    const username_ = document.getElementById('uUsername').value.trim();
+    const password = document.getElementById('uPassword').value;
+    const full_name = document.getElementById('uFullName').value.trim();
+    const role = document.getElementById('uRole').value;
+    if (!username_ || !password) { toast('Username dan password wajib diisi!', 'error'); return; }
+    const btn = document.getElementById('saveUserBtn');
+    btn.textContent = 'Menyimpan...'; btn.disabled = true;
+    try {
+      const res = await fetch('/api/admin/users', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ username: username_, password, full_name, role })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      toast('Akun berhasil dibuat!', 'success');
+      closeUserForm();
+      loadUsers();
+    } catch(e) {
+      toast(e.message || 'Gagal membuat akun', 'error');
+    } finally {
+      btn.textContent = 'Buat Akun'; btn.disabled = false;
+    }
+  }
+
+  async function deleteUser(id) {
+    if (!confirm('Yakin hapus akun ini?')) return;
+    try {
+      const res = await fetch(`/api/admin/users/${id}`, { method:'DELETE', headers: authHeaders() });
+      if (!res.ok) throw new Error('Gagal menghapus');
+      toast('Akun berhasil dihapus', 'success');
+      loadUsers();
+    } catch(e) { toast(e.message, 'error'); }
+  }
+
+  // ── PROFILE
+  async function loadProfile() {
+    try {
+      const res = await fetch('/api/profile', { headers: authHeaders() });
+      myProfile = await res.json();
+    } catch(e) {}
+  }
+
+  function loadProfilePage() {
+    document.getElementById('pFullName').value = myProfile.full_name || '';
+    document.getElementById('pBio').value = myProfile.bio || '';
+    document.getElementById('profileDisplayName').textContent = myProfile.full_name || myProfile.username || '—';
+    document.getElementById('profileUsername').textContent = '@' + (myProfile.username || '');
+    const av = document.getElementById('profileAvatarPreview');
+    av.innerHTML = myProfile.avatar_url ? `<img src="${myProfile.avatar_url}" alt=""/>` : '👤';
+  }
+
+  function previewAvatar(input) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('profileAvatarPreview').innerHTML = `<img src="${e.target.result}" alt=""/>`;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  async function saveProfile() {
+    try {
+      // Upload avatar dulu kalau ada
+      const avatarFile = document.getElementById('pAvatar').files[0];
+      if (avatarFile) {
+        const fd = new FormData();
+        fd.append('avatar', avatarFile);
+        const res = await fetch('/api/profile/avatar', {
+          method: 'POST', headers: { 'Authorization': 'Bearer ' + token }, body: fd
+        });
+        const data = await res.json();
+        if (res.ok) myProfile.avatar_url = data.avatar_url;
+      }
+      // Simpan nama & bio
+      const res = await fetch('/api/profile', {
+        method: 'PUT', headers: authHeaders(),
+        body: JSON.stringify({
+          full_name: document.getElementById('pFullName').value.trim(),
+          bio: document.getElementById('pBio').value.trim()
+        })
+      });
+      if (!res.ok) throw new Error('Gagal menyimpan');
+      await loadProfile();
+      loadProfilePage();
+      toast('Profil berhasil disimpan!', 'success');
+    } catch(e) { toast(e.message || 'Gagal menyimpan profil', 'error'); }
+  }
+
+  async function changePassword() {
+    const oldPass = document.getElementById('pOldPass').value;
+    const newPass = document.getElementById('pNewPass').value;
+    const confPass = document.getElementById('pConfPass').value;
+    if (!oldPass || !newPass) { toast('Semua field wajib diisi!', 'error'); return; }
+    if (newPass !== confPass) { toast('Konfirmasi password tidak cocok!', 'error'); return; }
+    try {
+      const res = await fetch('/api/change-password', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ oldPassword: oldPass, newPassword: newPass })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      toast('Password berhasil diubah!', 'success');
+      document.getElementById('pOldPass').value = '';
+      document.getElementById('pNewPass').value = '';
+      document.getElementById('pConfPass').value = '';
+    } catch(e) { toast(e.message || 'Gagal ganti password', 'error'); }
+  }
+
+  // ── FORM ARTIKEL
+  function openForm(article = null) {
+    document.getElementById('formTitle').textContent = article ? 'Edit Berita' : 'Tulis Berita Baru';
+    document.getElementById('editId').value = article?.id || '';
+    document.getElementById('fTitle').value = article?.title || '';
+    document.getElementById('fCategory').value = article?.category || 'Umum';
+    document.getElementById('fContent').value = article?.content || '';
+    document.getElementById('fAuthor').value = article?.author || myProfile.full_name || username || '';
+    document.getElementById('fPublished').value = article?.published !== undefined ? String(article.published) : '1';
+    document.getElementById('fImage').value = '';
+    const prev = document.getElementById('imgPreview');
+    prev.innerHTML = article?.image_url ? `<img src="${article.image_url}" alt=""/>` : '📷';
+    document.getElementById('formModal').classList.add('open');
+    document.getElementById('fTitle').focus();
+  }
+
+  function closeForm() { document.getElementById('formModal').classList.remove('open'); }
+
+  function previewImg(input) {
+    if (!input.files[0]) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      document.getElementById('imgPreview').innerHTML = `<img src="${e.target.result}" alt="preview"/>`;
+    };
+    reader.readAsDataURL(input.files[0]);
+  }
+
+  async function openEdit(id) {
+    const a = articlesData.find(x => x.id === id);
+    if (a) openForm(a);
+  }
+
+  async function saveArticle() {
+    const id = document.getElementById('editId').value;
+    const title = document.getElementById('fTitle').value.trim();
+    const content = document.getElementById('fContent').value.trim();
+    if (!title || !content) { toast('Judul dan isi wajib diisi!', 'error'); return; }
+    const btn = document.getElementById('saveBtn');
+    btn.textContent = 'Menyimpan...'; btn.disabled = true;
+    const fd = new FormData();
+    fd.append('title', title);
+    fd.append('category', document.getElementById('fCategory').value);
+    fd.append('content', content);
+    fd.append('author', document.getElementById('fAuthor').value);
+    fd.append('published', document.getElementById('fPublished').value);
+    const imgFile = document.getElementById('fImage').files[0];
+    if (imgFile) fd.append('image', imgFile);
+    try {
+      const url = id ? `/api/admin/articles/${id}` : '/api/admin/articles';
+      const method = id ? 'PUT' : 'POST';
+      const res = await fetch(url, { method, headers: { 'Authorization': 'Bearer ' + token }, body: fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      toast(id ? 'Artikel berhasil diperbarui!' : 'Artikel berhasil ditambahkan!', 'success');
+      closeForm();
+      loadDashboard();
+      if (document.getElementById('pageArticles').style.display !== 'none') loadArticles();
+    } catch(e) {
+      toast(e.message || 'Gagal menyimpan', 'error');
+    } finally {
+      btn.textContent = 'Simpan Berita'; btn.disabled = false;
+    }
+  }
+
+  async function deleteArticle(id) {
+    if (!confirm('Yakin hapus artikel ini?')) return;
+    try {
+      const res = await fetch(`/api/admin/articles/${id}`, { method:'DELETE', headers: authHeaders() });
+      if (!res.ok) throw new Error('Gagal menghapus');
+      toast('Artikel berhasil dihapus', 'success');
+      loadArticles(); loadDashboard();
+    } catch(e) { toast(e.message, 'error'); }
+  }
+
+  async function togglePublish(id) {
+    try {
+      const res = await fetch(`/api/admin/articles/${id}/toggle`, { method:'PATCH', headers: authHeaders() });
+      const data = await res.json();
+      toast(data.published ? 'Artikel dipublikasikan' : 'Artikel dijadikan draft', 'success');
+      loadArticles(); loadDashboard();
+    } catch(e) { toast('Gagal mengubah status', 'error'); }
+  }
+
+  function toast(msg, type = 'success') {
+    const t = document.getElementById('toast');
+    t.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+    t.className = `toast ${type} show`;
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  document.getElementById('formModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('formModal')) closeForm();
+  });
+  document.getElementById('userModal').addEventListener('click', e => {
+    if (e.target === document.getElementById('userModal')) closeUserForm();
+  });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeForm(); closeUserForm(); } });
+</script>
+</body>
+</html>
