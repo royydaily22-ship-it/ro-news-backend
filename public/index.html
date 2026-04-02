@@ -82,6 +82,50 @@
     .pill{font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;border:1px solid var(--rule);border-radius:99px;padding:5px 14px;color:var(--mid);cursor:default;transition:all .2s}
     .pill:hover{border-color:var(--ink);color:var(--ink)}
 
+    /* SEARCH */
+    .search-wrap{position:relative;margin-bottom:32px}
+    .search-input{width:100%;background:rgba(255,255,255,.8);backdrop-filter:blur(12px);border:1px solid var(--rule);border-radius:12px;padding:12px 44px 12px 16px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s}
+    .search-input:focus{border-color:var(--ink);box-shadow:0 0 0 3px rgba(14,13,11,.06)}
+    .search-input::placeholder{color:var(--light)}
+    .search-icon{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--light);pointer-events:none}
+    .search-clear{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:var(--mid);cursor:pointer;background:none;border:none;font-size:16px;display:none;line-height:1}
+
+    /* SHARE */
+    .share-row{display:flex;align-items:center;gap:8px;margin-top:20px;padding-top:20px;border-top:1px solid var(--rule);flex-wrap:wrap}
+    .share-label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-right:4px}
+    .share-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:7px 14px;border-radius:99px;border:1px solid var(--rule);background:none;cursor:pointer;color:var(--mid);transition:all .2s;text-decoration:none}
+    .share-btn:hover{border-color:var(--ink);color:var(--ink)}
+    .share-btn.wa:hover{border-color:#25d366;color:#25d366}
+    .share-btn.tw:hover{border-color:#000;color:#000}
+    .share-btn.fb:hover{border-color:#1877f2;color:#1877f2}
+
+    /* AVATAR */
+    .author-chip{display:flex;align-items:center;gap:7px}
+    .author-avatar{width:24px;height:24px;border-radius:50%;background:var(--rule);border:1.5px solid var(--rule);overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--mid)}
+    .author-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+    .author-avatar-lg{width:38px;height:38px;border-radius:50%;background:var(--rule);border:2px solid var(--rule);overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:16px;color:var(--mid)}
+    .author-avatar-lg img{width:100%;height:100%;object-fit:cover;display:block}
+    .author-info-lg{display:flex;flex-direction:column;gap:1px}
+    .author-info-lg strong{font-size:13px;font-weight:500;color:var(--ink)}
+    .author-info-lg span{font-size:11px;color:var(--mid);font-weight:300}
+
+    /* TAG COLORS */
+    .tag-color-0{background:#fde8f0;color:#c0255a}
+    .tag-color-1{background:#e8f4fd;color:#1a6fa8}
+    .tag-color-2{background:#edfbf3;color:#1a7a45}
+    .tag-color-3{background:#fff8e8;color:#a06800}
+    .tag-color-4{background:#f0ecff;color:#5b35c9}
+    .tag-color-5{background:#fff0ec;color:#c04a20}
+
+    /* SHARE */
+    .share-row{display:flex;align-items:center;gap:8px;margin-top:20px;padding-top:20px;border-top:1px solid var(--rule);flex-wrap:wrap}
+    .share-label{font-size:11px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--mid);margin-right:4px}
+    .share-btn{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;padding:7px 14px;border-radius:99px;border:1px solid var(--rule);background:none;cursor:pointer;color:var(--mid);transition:all .2s;text-decoration:none}
+    .share-btn:hover{border-color:var(--ink);color:var(--ink)}
+    .share-btn.wa:hover{border-color:#25d366;color:#25d366}
+    .share-btn.tw:hover{border-color:#000;color:#000}
+    .share-btn.fb:hover{border-color:#1877f2;color:#1877f2}
+
     /* LOADING */
     .loading{text-align:center;padding:60px 0;color:var(--mid);font-size:13px;letter-spacing:.1em}
     .loading::after{content:'';display:block;width:24px;height:24px;border:2px solid var(--rule);border-top-color:var(--ink);border-radius:50%;margin:12px auto 0;animation:spin .6s linear infinite}
@@ -116,16 +160,6 @@
 
     @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
     .news-card{animation:fadeUp .4s ease both}
-
-    /* AUTHOR AVATAR */
-    .author-chip{display:flex;align-items:center;gap:7px}
-    .author-avatar{width:24px;height:24px;border-radius:50%;background:var(--rule);border:1.5px solid var(--rule);overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:11px;color:var(--mid)}
-    .author-avatar img{width:100%;height:100%;object-fit:cover;display:block}
-    .author-avatar-lg{width:38px;height:38px;border-radius:50%;background:var(--rule);border:2px solid var(--rule);overflow:hidden;flex-shrink:0;display:inline-flex;align-items:center;justify-content:center;font-size:16px;color:var(--mid)}
-    .author-avatar-lg img{width:100%;height:100%;object-fit:cover;display:block}
-    .author-info-lg{display:flex;flex-direction:column;gap:1px}
-    .author-info-lg strong{font-size:13px;font-weight:500;color:var(--ink)}
-    .author-info-lg span{font-size:11px;color:var(--mid);font-weight:300}
   </style>
 </head>
 <body>
@@ -152,6 +186,13 @@
 
 <!-- MAIN -->
 <main class="wrap">
+  <!-- SEARCH -->
+  <div class="search-wrap">
+    <input class="search-input" type="text" id="searchInput" placeholder="Cari berita..." oninput="handleSearch(this.value)"/>
+    <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <button class="search-clear" id="searchClear" onclick="clearSearch()">✕</button>
+  </div>
+
   <div id="heroSection"></div>
 
   <div class="section-header">
@@ -163,11 +204,16 @@
   </div>
 </main>
 
+<div id="newsList" class="news-grid">
+    <div class="loading"></div>
+  </div>
+  <div class="pagination" id="pagination" style="display:none"></div>
+
 <!-- MODAL DETAIL -->
 <div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
   <div class="modal">
     <div class="modal-inner" id="modalInner">
-      <button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      <button class="modal-close" onclick="closeModal()">✕</button>
     </div>
   </div>
 </div>
@@ -184,10 +230,13 @@
 </footer>
 
 <script>
-  let allArticles = [];
-  let currentCat = '';
+let allArticles = [];
+let currentCat = '';
+let currentPage = 0;
+const PAGE_SIZE = 5;
+let totalArticles = 0;
 
-  // reading progress
+  // reading progres s
   window.addEventListener('scroll', () => {
     const pct = (document.documentElement.scrollTop / (document.documentElement.scrollHeight - document.documentElement.clientHeight)) * 100;
     document.getElementById('progress').style.width = pct + '%';
@@ -196,6 +245,35 @@
   // format tanggal
   function formatDate(d) {
     return new Date(d).toLocaleDateString('id-ID', { weekday:'long', year:'numeric', month:'long', day:'numeric' });
+  }
+
+  // ── SEARCH
+  let searchQuery = '';
+  function handleSearch(val) {
+    searchQuery = val.trim().toLowerCase();
+    document.getElementById('searchClear').style.display = searchQuery ? 'block' : 'none';
+    applyFilter();
+  }
+  function clearSearch() {
+    document.getElementById('searchInput').value = '';
+    searchQuery = '';
+    document.getElementById('searchClear').style.display = 'none';
+    applyFilter();
+  }
+  function applyFilter() {
+    let filtered = currentCat ? allArticles.filter(a => a.category === currentCat) : allArticles;
+    if (searchQuery) {
+      filtered = filtered.filter(a =>
+        a.title.toLowerCase().includes(searchQuery) ||
+        a.content.toLowerCase().includes(searchQuery) ||
+        (a.author_display || a.author || '').toLowerCase().includes(searchQuery)
+      );
+      document.getElementById('listLabel').textContent = `Hasil: "${searchQuery}"`;
+    } else {
+      document.getElementById('listLabel').textContent = currentCat ? `Kategori: ${currentCat}` : 'Berita Terbaru';
+    }
+    renderHero(filtered);
+    renderList(filtered.slice(1));
   }
 
   // load categories
@@ -218,22 +296,41 @@
     currentCat = cat;
     document.querySelectorAll('#catNav button').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.getElementById('listLabel').textContent = cat ? `Kategori: ${cat}` : 'Berita Terbaru';
-    const filtered = cat ? allArticles.filter(a => a.category === cat) : allArticles;
-    renderHero(filtered);
-    renderList(filtered.slice(1));
+    applyFilter();
   }
 
   // load articles
-  async function loadArticles() {
+  async function loadArticles(offset = 0) {
+    currentPage = offset;
+    document.getElementById('newsList').innerHTML = '<div class="loading"></div>';
+    document.getElementById('pagination').style.display = 'none';
     try {
-      const res = await fetch('/api/articles');
-      allArticles = await res.json();
-      renderHero(allArticles);
-      renderList(allArticles.slice(1));
+      let url = `/api/articles?limit=${PAGE_SIZE}&offset=${offset}`;
+      if (currentCat) url += `&category=${encodeURIComponent(currentCat)}`;
+      const res = await fetch(url);
+      const data = await res.json();
+      allArticles = data.items || [];
+      totalArticles = data.total || 0;
+      renderHero(offset === 0 ? allArticles : []);
+      renderList(offset === 0 ? allArticles.slice(1) : allArticles);
+      renderPagination();
     } catch(e) {
       document.getElementById('newsList').innerHTML = '<p class="empty">Gagal memuat berita. Pastikan server berjalan.</p>';
     }
+  }
+
+  function renderPagination() {
+    const pg = document.getElementById('pagination');
+    if (totalArticles <= PAGE_SIZE) { pg.style.display = 'none'; return; }
+    pg.style.display = 'flex';
+    const totalPages = Math.ceil(totalArticles / PAGE_SIZE);
+    const curPage = Math.floor(currentPage / PAGE_SIZE);
+    let html = `<button class="page-btn" onclick="loadArticles(${Math.max(0, currentPage - PAGE_SIZE)})" ${currentPage === 0 ? 'disabled' : ''}>← Prev</button>`;
+    for (let i = 0; i < totalPages; i++) {
+      html += `<button class="page-btn ${i === curPage ? 'active' : ''}" onclick="loadArticles(${i * PAGE_SIZE})">${i + 1}</button>`;
+    }
+    html += `<button class="page-btn" onclick="loadArticles(${currentPage + PAGE_SIZE})" ${currentPage + PAGE_SIZE >= totalArticles ? 'disabled' : ''}>Next →</button>`;
+    pg.innerHTML = html;
   }
 
   const catColorMap = {};
@@ -255,7 +352,7 @@
           <div class="hero-img-wrap">
             ${a.image_url
               ? `<img src="${a.image_url}" alt="${a.title}" loading="lazy"/>`
-              : `<svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--light)"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>`}
+              : '📰'}
             <div class="hero-img-title"><h2>${a.title}</h2></div>
           </div>
           <div class="hero-content">
@@ -267,12 +364,10 @@
             <div class="hero-read-more">Continue Reading </div>
             <div class="hero-meta">
               <div class="author-chip">
-                <div class="author-avatar">
-                  ${a.author_avatar ? `<img src="${a.author_avatar}" alt="${a.author_display || a.author}"/>` : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
-                </div>
+                <div class="author-avatar">${a.author_avatar ? `<img src="${a.author_avatar}" alt=""/>` : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}</div>
                 <span>${a.author_display || a.author}</span>
               </div>
-              &nbsp;·&nbsp; <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:3px"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>${formatDate(a.created_at)}
+              &nbsp;·&nbsp; ${formatDate(a.created_at)}
             </div>
           </div>
         </div>
@@ -282,37 +377,39 @@
   function renderList(articles) {
     const list = document.getElementById('newsList');
     if (!articles.length) { list.innerHTML = '<p class="empty">Belum ada berita lain.</p>'; return; }
-    list.innerHTML = articles.map((a, i) => `
+    list.innerHTML = articles.map((a, i) => {
+      const colorIdx = getCatColor(a.category);
+      const excerpt = (a.content || '').split('\n\n')[0].slice(0, 120) + '...';
+      return `
       <div class="news-card" style="animation-delay:${i * 0.05}s" onclick="openArticle(${a.id})">
         <div class="news-card-img">
-          ${a.image_url ? `<img src="${a.image_url}" alt="${a.title}" loading="lazy"/>` : `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="color:var(--light)"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>`}
+          ${a.image_url ? `<img src="${a.image_url}" alt="${a.title}" loading="lazy"/>` : '📰'}
         </div>
         <div class="news-card-body">
-          <span class="news-card-tag">${a.category}</span>
+          <span class="news-card-tag tag-color-${colorIdx}">${a.category}</span>
           <div class="news-card-title">${a.title}</div>
-          <div class="news-card-meta">
+          <div class="news-card-meta" style="margin-top:4px">
             <div class="author-chip">
-              <div class="author-avatar">
-                ${a.author_avatar ? `<img src="${a.author_avatar}" alt="${a.author_display || a.author}"/>` : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
-              </div>
+              <div class="author-avatar">${a.author_avatar ? `<img src="${a.author_avatar}" alt=""/>` : `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}</div>
               <span>${a.author_display || a.author} · ${formatDate(a.created_at)}</span>
             </div>
           </div>
         </div>
-      </div>`).join('');
+      </div>`;
+    }).join('');
   }
 
   async function openArticle(id) {
     const overlay = document.getElementById('modalOverlay');
     const inner = document.getElementById('modalInner');
     overlay.classList.add('open');
-    inner.innerHTML = `<button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="loading"></div>`;
+    inner.innerHTML = `<button class="modal-close" onclick="closeModal()">✕</button><div class="loading"></div>`;
     try {
       const res = await fetch(`/api/articles/${id}`);
       const a = await res.json();
       const paragraphs = (a.content || '').split('\n\n').filter(Boolean);
       inner.innerHTML = `
-        <button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+        <button class="modal-close" onclick="closeModal()">✕</button>
         ${a.image_url ? `<div class="modal-img"><img src="${a.image_url}" alt="${a.title}"/></div>` : ''}
         <div class="article-meta" style="margin-bottom:12px">
           <span class="tag">${a.category}</span>
@@ -326,17 +423,18 @@
           ${a.quote ? `<blockquote><p>"${a.quote}"</p></blockquote>` : ''}
         </div>
         <div style="display:flex;align-items:center;gap:12px;margin-top:20px;padding-top:20px;border-top:1px solid var(--rule)">
-          <div class="author-avatar-lg">
-            ${a.author_avatar ? `<img src="${a.author_avatar}" alt="${a.author_display || a.author}"/>` : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`}
-          </div>
-          <div class="author-info-lg">
-            <strong>${a.author_display || a.author}</strong>
-            <span>Ditulis pada ${formatDate(a.created_at)}</span>
-          </div>
+          <div class="author-avatar-lg">${a.author_avatar ? `<img src="${a.author_avatar}" alt=""/>` : '👤'}</div>
+          <div class="author-info-lg"><strong>${a.author_display || a.author}</strong><span>Ditulis pada ${formatDate(a.created_at)}</span></div>
         </div>
-        <div class="tags-row"><span class="pill">${a.category}</span></div>`;
+        <div class="tags-row"><span class="pill">${a.category}</span></div>
+        <div class="share-row">
+          <span class="share-label">Bagikan</span>
+          <a class="share-btn wa" href="https://wa.me/?text=${encodeURIComponent(a.title + ' - ' + window.location.href)}" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="share-btn tw" href="https://twitter.com/intent/tweet?text=${encodeURIComponent(a.title)}&url=${encodeURIComponent(window.location.href)}" target="_blank" rel="noopener">X</a>
+          <a class="share-btn fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(window.location.href)}" target="_blank" rel="noopener">Facebook</a>
+        </div>`;
     } catch(e) {
-      inner.innerHTML = `<button class="modal-close" onclick="closeModal()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><p class="empty">Gagal memuat artikel.</p>`;
+      inner.innerHTML = `<button class="modal-close" onclick="closeModal()">✕</button><p class="empty">Gagal memuat artikel.</p>`;
     }
   }
 

@@ -4,10 +4,6 @@
 // ══════════════════════════════════════════════
 
 require('dotenv').config();
-if (!process.env.JWT_SECRET || !process.env.ADMIN_PASS) {
-  console.error("❌ ENV belum di set!");
-  process.exit(1);
-}
 const express  = require('express');
 const low      = require('lowdb');
 const FileSync = require('lowdb/adapters/FileSync');
@@ -20,7 +16,7 @@ const cors     = require('cors');
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET = process.env.JWT_SECRET || 'ronews_secret_key_2025';
 
 app.use(cors());
 app.use(express.json());
@@ -63,12 +59,14 @@ function now() {
   return new Date().toLocaleString('sv-SE');
 }
 
-db.defaults({ users: [], articles: [] }).write();
+db.defaults({ users: [], articles: [], categories: [
+  'Umum','Nasional','Daerah','Kuliner','Ekonomi','Olahraga','Teknologi','Budaya','Pendidikan'
+] }).write();
 
 // Seed admin default
 const adminExists = db.get('users').find({ username: 'admin' }).value();
 if (!adminExists) {
-const hashed = bcrypt.hashSync(process.env.ADMIN_PASS, 10);
+  const hashed = bcrypt.hashSync(process.env.ADMIN_PASS || 'admin123', 10);
   db.get('users').push({
     id: 1, username: 'admin', password: hashed, role: 'admin',
     full_name: 'Administrator', bio: '', avatar_url: null
@@ -222,24 +220,47 @@ app.delete('/api/admin/users/:id', authMiddleware, adminOnly, (req, res) => {
 });
 
 // ══════════════════════════════════════════════
+//  ROUTES: CATEGORIES
+// ══════════════════════════════════════════════
+
+app.get('/api/categories', (req, res) => {
+  res.json(db.get('categories').value());
+});
+
+app.post('/api/admin/categories', authMiddleware, adminOnly, (req, res) => {
+  const { name } = req.body;
+  if (!name) return res.status(400).json({ error: 'Nama kategori wajib diisi' });
+  const cats = db.get('categories').value();
+  if (cats.includes(name)) return res.status(400).json({ error: 'Kategori sudah ada' });
+  db.get('categories').push(name).write();
+  res.status(201).json({ name });
+});
+
+app.delete('/api/admin/categories/:name', authMiddleware, adminOnly, (req, res) => {
+  const name = decodeURIComponent(req.params.name);
+  db.get('categories').pull(name).write();
+  res.json({ message: 'Kategori dihapus' });
+});
+
+// ══════════════════════════════════════════════
 //  ROUTES: ARTICLES (PUBLIC)
 // ══════════════════════════════════════════════
 
 app.get('/api/articles', (req, res) => {
-  const { category, limit = 20, offset = 0 } = req.query;
+  const { category, limit = 10, offset = 0 } = req.query;
   let items = db.get('articles').filter({ published: 1 }).value();
   if (category) items = items.filter(a => a.category === category);
   items = items.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  const total = items.length;
   items = items.slice(Number(offset), Number(offset) + Number(limit));
 
-  // Attach avatar dari user
   const users = db.get('users').value();
   items = items.map(a => {
     const u = users.find(u => u.id === a.author_id);
     return { ...a, author_avatar: u?.avatar_url || null, author_display: u?.full_name || a.author };
   });
 
-  res.json(items);
+  res.json({ items, total, offset: Number(offset), limit: Number(limit) });
 });
 
 app.get('/api/articles/:id', (req, res) => {
@@ -249,11 +270,7 @@ app.get('/api/articles/:id', (req, res) => {
   res.json({ ...article, author_avatar: u?.avatar_url || null, author_display: u?.full_name || article.author });
 });
 
-app.get('/api/categories', (req, res) => {
-  const articles = db.get('articles').filter({ published: 1 }).value();
-  const cats = [...new Set(articles.map(a => a.category))];
-  res.json(cats);
-});
+
 
 // ══════════════════════════════════════════════
 //  ROUTES: ARTICLES (ADMIN)
@@ -336,4 +353,12 @@ app.patch('/api/admin/articles/:id/toggle', authMiddleware, (req, res) => {
   res.json({ published: !!newStatus });
 });
 
-module.exports = app;
+// ══════════════════════════════════════════════
+//  START
+// ══════════════════════════════════════════════
+app.listen(PORT, () => {
+  console.log(`\n🚀 RO NEWS Server berjalan di http://localhost:${PORT}`);
+  console.log(`📰 Frontend  → http://localhost:${PORT}/index.html`);
+  console.log(`🔧 Admin     → http://localhost:${PORT}/admin.html`);
+  console.log(`📦 API       → http://localhost:${PORT}/api/articles\n`);
+});

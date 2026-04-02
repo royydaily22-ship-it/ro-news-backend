@@ -1,7 +1,10 @@
 {
   "name": "ro-news",
   "version": "1.0.0",
-  "main": "api/index.js",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",

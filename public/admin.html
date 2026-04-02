@@ -121,10 +121,38 @@
     .toast.error{border-color:rgba(248,113,113,.3);color:var(--red)}
     .loading-row td{text-align:center;padding:40px;color:var(--mid);font-size:13px}
 
-    @media(max-width:768px){.sidebar-nav{display:none}.main-content{margin-left:0;padding:20px}}
+    /* MOBILE SIDEBAR */
+    .mobile-topbar{display:none;background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:20}
+    .mobile-topbar .brand{font-family:'DM Serif Display',serif;font-size:18px;color:var(--ink)}
+    .hamburger{background:none;border:none;cursor:pointer;color:var(--mid);padding:4px}
+    .sidebar-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:30}
+    .sidebar-overlay.open{display:block}
+    .sidebar-nav.mobile-open{transform:translateX(0)!important}
+
+    /* KATEGORI */
+    .cat-list{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+    .cat-item{display:flex;align-items:center;justify-content:space-between;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:10px 14px;font-size:13px;color:var(--ink)}
+    .cat-add-row{display:flex;gap:8px}
+    .cat-add-row input{flex:1;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px 14px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--ink);outline:none}
+    .cat-add-row input:focus{border-color:var(--light)}
+
+    @media(max-width:768px){
+      .sidebar-nav{transform:translateX(-100%);transition:transform .3s;z-index:40}
+      .mobile-topbar{display:flex}
+      .main-content{margin-left:0;padding:20px;padding-top:0}
+    }
   </style>
 </head>
 <body>
+
+<!-- MOBILE TOPBAR -->
+<div class="mobile-topbar" id="mobileTopbar">
+  <span class="brand">RO NEWS</span>
+  <button class="hamburger" onclick="toggleSidebar()">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</div>
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
 
 <!-- LOGIN -->
 <div class="login-wrap" id="loginWrap">
@@ -142,15 +170,16 @@
 <div class="app" id="app">
   <nav class="sidebar-nav">
     <div class="sidebar-brand">RO NEWS <span>Admin Panel</span></div>
-    <button class="nav-item active" id="navDashboard" onclick="showPage('dashboard')"><span class="icon">📊</span> Dashboard</button>
-    <button class="nav-item" id="navArticles" onclick="showPage('articles')"><span class="icon">📰</span> Artikel</button>
-    <button class="nav-item" id="navNew" onclick="openForm()"><span class="icon">✏️</span> Tulis Berita</button>
-    <button class="nav-item" id="navUsers" onclick="showPage('users')"><span class="icon">👥</span> Akun</button>
-    <button class="nav-item" id="navProfile" onclick="showPage('profile')"><span class="icon">🙍</span> Profil Saya</button>
+    <button class="nav-item active" id="navDashboard" onclick="showPage('dashboard')"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></span> Dashboard</button>
+    <button class="nav-item" id="navArticles" onclick="showPage('articles')"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg></span> Artikel</button>
+    <button class="nav-item" id="navNew" onclick="openForm()"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></span> Tulis Berita</button>
+    <button class="nav-item" id="navUsers" onclick="showPage('users')"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> Akun</button>
+    <button class="nav-item" id="navProfile" onclick="showPage('profile')"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span> Profil Saya</button>
+    <button class="nav-item" id="navCategories" onclick="showPage('categories')"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg></span> Kategori</button>
     <div class="nav-bottom">
       <div class="nav-user"><strong id="navUsername">Admin</strong>Administrator</div>
-      <button class="nav-item" onclick="window.open('/index.html','_blank')"><span class="icon">🌐</span> Lihat Website</button>
-      <button class="nav-item" onclick="doLogout()"><span class="icon">🚪</span> Keluar</button>
+      <button class="nav-item" onclick="window.open('/index.html','_blank')"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg></span> Lihat Website</button>
+      <button class="nav-item" onclick="doLogout()"><span class="icon"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg></span> Keluar</button>
     </div>
   </nav>
 
@@ -237,6 +266,20 @@
           <div class="field"><label>Password Baru</label><input type="password" id="pNewPass" placeholder="••••••••"/></div>
           <div class="field"><label>Konfirmasi Password Baru</label><input type="password" id="pConfPass" placeholder="••••••••"/></div>
           <button class="btn btn-primary" style="margin-top:8px" onclick="changePassword()">Ganti Password</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CATEGORIES -->
+    <div id="pageCategories" style="display:none">
+      <div class="page-header">
+        <div><h2>Kelola Kategori</h2><p>Tambah dan hapus kategori berita</p></div>
+      </div>
+      <div class="table-wrap" style="padding:20px">
+        <div class="cat-list" id="catList"></div>
+        <div class="cat-add-row">
+          <input type="text" id="newCatInput" placeholder="Nama kategori baru..." onkeydown="if(event.key==='Enter')addCategory()"/>
+          <button class="btn btn-primary btn-sm" style="width:auto" onclick="addCategory()">Tambah</button>
         </div>
       </div>
     </div>
@@ -341,6 +384,7 @@
     document.getElementById('navUsername').textContent = username || 'Admin';
     await loadProfile();
     loadDashboard();
+    loadCategories();
   }
 
   function doLogout() {
@@ -354,7 +398,7 @@
 
   // ── PAGES
   function showPage(page) {
-    ['dashboard','articles','users','profile'].forEach(p => {
+    ['dashboard','articles','users','profile','categories'].forEach(p => {
       document.getElementById('page' + p.charAt(0).toUpperCase() + p.slice(1)).style.display = p === page ? '' : 'none';
     });
     document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
@@ -363,6 +407,7 @@
     if (page === 'dashboard') loadDashboard();
     if (page === 'users') loadUsers();
     if (page === 'profile') loadProfilePage();
+    if (page === 'categories') loadCategories();
   }
 
   // ── DASHBOARD
@@ -651,6 +696,64 @@
       toast(data.published ? 'Artikel dipublikasikan' : 'Artikel dijadikan draft', 'success');
       loadArticles(); loadDashboard();
     } catch(e) { toast('Gagal mengubah status', 'error'); }
+  }
+
+  // ── MOBILE SIDEBAR
+  function toggleSidebar() {
+    const nav = document.querySelector('.sidebar-nav');
+    const overlay = document.getElementById('sidebarOverlay');
+    nav.classList.toggle('mobile-open');
+    overlay.classList.toggle('open');
+  }
+
+  // ── CATEGORIES
+  async function loadCategories() {
+    try {
+      const res = await fetch('/api/categories');
+      const cats = await res.json();
+      document.getElementById('catList').innerHTML = cats.map(cat => `
+        <div class="cat-item">
+          <span>${cat}</span>
+          <button class="btn btn-danger btn-sm" onclick="deleteCategory('${cat}')">Hapus</button>
+        </div>`).join('') || '<p style="color:var(--mid);font-size:13px">Belum ada kategori.</p>';
+      // Sync ke select form artikel
+      syncCategorySelect(cats);
+    } catch(e) {}
+  }
+
+  function syncCategorySelect(cats) {
+    const sel = document.getElementById('fCategory');
+    const cur = sel.value;
+    sel.innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join('');
+    if (cats.includes(cur)) sel.value = cur;
+  }
+
+  async function addCategory() {
+    const name = document.getElementById('newCatInput').value.trim();
+    if (!name) return;
+    try {
+      const res = await fetch('/api/admin/categories', {
+        method: 'POST', headers: authHeaders(),
+        body: JSON.stringify({ name })
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error);
+      document.getElementById('newCatInput').value = '';
+      toast('Kategori ditambahkan!', 'success');
+      loadCategories();
+    } catch(e) { toast(e.message || 'Gagal menambah kategori', 'error'); }
+  }
+
+  async function deleteCategory(name) {
+    if (!confirm(`Hapus kategori "${name}"?`)) return;
+    try {
+      const res = await fetch(`/api/admin/categories/${encodeURIComponent(name)}`, {
+        method: 'DELETE', headers: authHeaders()
+      });
+      if (!res.ok) throw new Error('Gagal menghapus');
+      toast('Kategori dihapus', 'success');
+      loadCategories();
+    } catch(e) { toast(e.message, 'error'); }
   }
 
   function toast(msg, type = 'success') {
